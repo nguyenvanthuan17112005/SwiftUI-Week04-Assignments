@@ -1,48 +1,107 @@
 import SwiftUI
+
 struct ComponentMenuView: View {
 
     var body: some View {
-        List {
-            Section("Text & Image") {
-                NavigationLink("Text") { TextDemoView() }
-                NavigationLink("Image") { ImageDemoView() }
-            }
+        NavigationStack {
+            List {
 
-            Section("Inputs") {
-                NavigationLink("TextField") { TextFieldDemoView() }
-                NavigationLink("SecureField") { SecureFieldDemoView() }
-                NavigationLink("Toggle") { ToggleDemoView() }
-                NavigationLink("Slider") { SliderDemoView() }
-                NavigationLink("Stepper") { StepperDemoView() }
-                NavigationLink("Picker") { PickerDemoView() }
-                NavigationLink("DatePicker") { DatePickerDemoView() }
-            }
+                section(
+                    title: "Text & Image",
+                    items: [
+                        ("Text", "textformat", AnyView(TextDemoView())),
+                        ("Image", "photo", AnyView(ImageDemoView()))
+                    ]
+                )
 
-            Section("Controls") {
-                NavigationLink("Button") { ButtonDemoView() }
-                NavigationLink("ProgressView") { ProgressViewDemoView() }
-            }
+                section(
+                    title: "Inputs",
+                    items: [
+                        ("TextField", "rectangle.and.pencil.and.ellipsis", AnyView(TextFieldDemoView())),
+                        ("SecureField", "lock", AnyView(SecureFieldDemoView())),
+                        ("Toggle", "switch.2", AnyView(ToggleDemoView())),
+                        ("Slider", "slider.horizontal.3", AnyView(SliderDemoView())),
+                        ("Stepper", "plusminus", AnyView(StepperDemoView())),
+                        ("Picker", "list.bullet", AnyView(PickerDemoView())),
+                        ("DatePicker", "calendar", AnyView(DatePickerDemoView()))
+                    ]
+                )
 
-            Section("Layout") {
-                NavigationLink("HStack") { HStackDemoView() }
-                NavigationLink("VStack") { VStackDemoView() }
-                NavigationLink("ZStack") { ZStackDemoView() }
-                NavigationLink("Divider") {DividerDemoView()}
-                NavigationLink("Spacer") {SpacerDemoView()}
-            }
+                section(
+                    title: "Controls",
+                    items: [
+                        ("Button", "cursorarrow.click", AnyView(ButtonDemoView())),
+                        ("ProgressView", "hourglass", AnyView(ProgressViewDemoView()))
+                    ]
+                )
 
-            Section("Navigation") {
-                NavigationLink("Sheet") { SheetDemoView() }
-                NavigationLink("Alert") { AlertDemoView() }
-                NavigationLink("NavigationStackDemoView") { NavigationStackDemoView() }
+                section(
+                    title: "Layout",
+                    items: [
+                        ("HStack", "square.split.1x2", AnyView(HStackDemoView())),
+                        ("VStack", "square.split.2x1", AnyView(VStackDemoView())),
+                        ("ZStack", "square.stack.3d.down.right", AnyView(ZStackDemoView())),
+                        ("Divider", "minus", AnyView(DividerDemoView())),
+                        ("Spacer", "arrow.left.and.right", AnyView(SpacerDemoView()))
+                    ]
+                )
+
+                section(
+                    title: "Containers",
+                    items: [
+                        ("Form", "list.bullet.rectangle.portrait", AnyView(FormDemoView())),
+                        ("List", "list.bullet.rectangle", AnyView(ListDemoView())),
+                        ("ScrollView", "arrow.up.and.down", AnyView(ScrollViewDemoView()))
+                    ]
+                )
+
+                section(
+                    title: "Navigation",
+                    items: [
+                        ("Sheet", "square.and.arrow.up", AnyView(SheetDemoView())),
+                        ("Alert", "exclamationmark.triangle", AnyView(AlertDemoView())),
+                        ("NavigationStack", "arrow.right", AnyView(NavigationStackDemoView()))
+                    ]
+                )
+
+                section(
+                    title: "Misc",
+                    items: [
+                        ("GroupBox", "square.stack", AnyView(GroupBoxDemoView())),
+                        ("Label", "tag", AnyView(LabelDemoView())),
+                        ("Link", "link", AnyView(LinkDemoView()))
+                    ]
+                )
             }
-            Section("Misc"){
-                NavigationLink("Group Box") { GroupBoxDemoView() }
-                NavigationLink("Label") { LabelDemoView() }
-                NavigationLink("Link") { LinkDemoView() }
-                 
+            .listStyle(.insetGrouped)
+            .navigationTitle("UI Components")
+            .tint(.blue)
+        }
+    }
+
+    // MARK: - Section Builder
+    @ViewBuilder
+    private func section(
+        title: String,
+        items: [(String, String, AnyView)]
+    ) -> some View {
+        Section {
+            ForEach(items, id: \.0) { item in
+                NavigationLink {
+                    item.2
+                } label: {
+                    Label(item.0, systemImage: item.1)
+                        .font(.system(size: 16, weight: .medium))
+                }
             }
+        } header: {
+            Text(title.uppercased())
+                .font(.caption)
+                .foregroundColor(.gray)
         }
     }
 }
 
+#Preview {
+    ComponentMenuView()
+}
